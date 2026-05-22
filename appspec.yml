@@ -4,20 +4,11 @@ files:
   - source: /
     destination: /var/www/html
 
-hooks:
-  BeforeInstall:
-    - location: scripts/stop_server.sh
-      timeout: 300
-      runas: root
-  AfterInstall:
-    - location: scripts/start_server.sh
-      timeout: 300
-      runas: root
-      version: 0.0
+
 os: linux
 
 files:
-  - source: /dist          # built output folder
+  - source: /build         # built output folder
     destination: /var/www/html
 
 permissions:
