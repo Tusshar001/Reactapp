@@ -1,0 +1,45 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html
+
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_server.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: scripts/start_server.sh
+      timeout: 300
+      runas: root
+      version: 0.0
+os: linux
+
+files:
+  - source: /dist          # built output folder
+    destination: /var/www/html
+  - source: /package.json
+    destination: /var/www/html
+
+permissions:
+  - object: /var/www/html
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+    mode: "755"
+    type:
+      - directory
+      - file
+
+hooks:
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 120
+      runas: ec2-user
+
+  ApplicationStop:
+    - location: scripts/stop_server.sh
+      timeout: 120
+      runas: ec2-user
+      
