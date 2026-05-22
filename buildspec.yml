@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+
+    commands:
+      - echo "Current directory:"
+      - pwd
+
+      - echo "Files:"
+      - ls -la
+
+      - echo "Finding package.json"
+      - find . -name package.json
+
+      - if [ -f package.json ]; then npm install; else echo "package.json not found"; fi
+
+  build:
+    commands:
+      - if [ -f package.json ]; then npm run build; else echo "Skipping build"; fi
+
+  post_build:
+    commands:
+      - echo "Completed"
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: .
